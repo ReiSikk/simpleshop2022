@@ -26,6 +26,22 @@ function App() {
       setCart((oldCart) => oldCart.concat({ ...data, amount: 1 }));
     }
   }
+  function removeFromCart(id) {
+    //find and modify a product
+    setCart((oldCart) => {
+      const substracted = oldCart.map((item) => {
+        if (item.id === id) {
+          //this creates a new object for us but with the new amount
+          return { ...item, amount: item.amount - 1 };
+        }
+        return item;
+      });
+      //filtered will be our new state which we return to setCart
+      const filtered = substracted.filter((item) => item.amount > 0);
+      return filtered;
+    });
+    //filter
+  }
 
   useEffect(() => {
     async function getData() {
@@ -39,7 +55,7 @@ function App() {
     <div className="App">
       <Header />
       <ProductList products={products} addToCart={addToCart} />
-      <Basket products={products} cart={cart} />
+      <Basket removeFromCart={removeFromCart} products={products} cart={cart} />
     </div>
   );
 }
